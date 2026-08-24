@@ -1,0 +1,62 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  strg-rg: rg-terraform-demo
+  stgacct: stgmdemo1064155300
+  stg-cont: tfstate
+  stg-key: simple_vm_key.tfstate
+
+  
+
+stages:
+- stage: 1st stage
+  jobs:
+  - job: Keyvault
+    steps:
+    - task: AzureKeyVault@2
+      displayName: Fetch keyvault
+      inputs:
+        azureSubscription: 'miyoming_vm'
+        KeyVaultName: 'miyoming-keyvault'
+        SecretsFilter: '*'
+        RunAsPreJob: false
+
+    - task: TerraformInstaller@1
+      displayName: Install Terraform
+      inputs:
+        terraformVersion: '1.15.9'
+
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: 'miyoming_vm'
+        backendAzureRmResourceGroupName: '$(strg-rg)'
+        backendAzureRmStorageAccountName: '$(stgacct)'
+        backendAzureRmContainerName: '$(stg-cont)'
+        backendAzureRmKey: '$(stg-key)'
+
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        environmentServiceNameAzureRM: 'miyoming_vm'
+
+- stage: apply
+  jobs:
+  - job: apply_now
+    steps:
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'apply'
+          environmentServiceNameAzureRM: 'miyoming_vm'
