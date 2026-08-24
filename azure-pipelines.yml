@@ -66,9 +66,23 @@ stages:
   - job: apply_now
     steps:
       - task: TerraformInstaller@1
+        displayName: Terraform init
         inputs:
           terraformVersion: '1.15.9'
+
       - task: TerraformTask@5
+        displayName: Terraform init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          backendServiceArm: 'miyoming_vm'
+          backendAzureRmResourceGroupName: '$(strg-rg)'
+          backendAzureRmStorageAccountName: '$(stgacct)'
+          backendAzureRmContainerName: '$(stg-cont)'
+          backendAzureRmKey: '$(stg-key)'      
+
+      - task: TerraformTask@5
+        displayName: Terraform apply
         inputs:
           provider: 'azurerm'
           command: 'apply'
