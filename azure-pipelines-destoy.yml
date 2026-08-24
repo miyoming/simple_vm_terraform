@@ -1,0 +1,47 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  strg-rg: rg-terraform-demo
+  stgacct: stgmdemo1064155300
+  stg-cont: tfstate
+  stg-key: simple_vm_key.tfstate
+
+  
+
+stages:
+- stage: tfdestroy
+  jobs:
+  - job: destroy
+    steps:
+
+    - task: TerraformInstaller@1
+      displayName: Install Terraform
+      inputs:
+        terraformVersion: '1.15.9'
+
+    - task: TerraformTask@5
+      displayName: Terraform init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: 'miyoming_vm'
+        backendAzureRmResourceGroupName: '$(strg-rg)'
+        backendAzureRmStorageAccountName: '$(stgacct)'
+        backendAzureRmContainerName: '$(stg-cont)'
+        backendAzureRmKey: '$(stg-key)'
+
+
+    - task: TerraformTask@5
+      displayName: Terraform destroy
+      inputs:
+        provider: 'azurerm'
+        command: 'destroy'
+        environmentServiceNameAzureRM: 'miyoming_vm'
