@@ -39,8 +39,8 @@ resource "azurerm_resource_group" "example" {
 
 resource "azurerm_network_interface" "main" {
   name                = "${var.prefix}-nic"
-  location            = data.azurerm_virtual_network.existing.location
-  resource_group_name = data.azurerm_virtual_network.existing.resource_group_name
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
 
   ip_configuration {
     name                          = "testconfiguration1"
