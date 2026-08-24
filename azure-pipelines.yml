@@ -18,7 +18,7 @@ variables:
   
 
 stages:
-- stage: 1ststage
+- stage: unangstage
   jobs:
   - job: Keyvault
     steps:
