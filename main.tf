@@ -12,7 +12,7 @@ backend "azurerm" {
     key                  = ""
 
 }
-
+}
 provider "azurerm" {
   features {}
 }
