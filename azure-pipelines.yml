@@ -18,7 +18,7 @@ variables:
   
 
 stages:
-- stage: unangstage
+- stage: tfvalidate
   jobs:
   - job: Keyvault
     steps:
@@ -36,6 +36,7 @@ stages:
         terraformVersion: '1.15.9'
 
     - task: TerraformTask@5
+      displayName: Terraform init
       inputs:
         provider: 'azurerm'
         command: 'init'
@@ -46,15 +47,27 @@ stages:
         backendAzureRmKey: '$(stg-key)'
 
     - task: TerraformTask@5
+      displayName: Terraform validate
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+
+    - task: TerraformTask@5
+      displayName: Terraform plan
       inputs:
         provider: 'azurerm'
         command: 'plan'
         environmentServiceNameAzureRM: 'miyoming_vm'
 
-- stage: apply
+- stage: tfapply
+  dependsOn: tfvalidate
+  condition: succeeded('tfvalidate')
   jobs:
   - job: apply_now
     steps:
+      - task: TerraformInstaller@1
+        inputs:
+          terraformVersion: '1.15.9'
       - task: TerraformTask@5
         inputs:
           provider: 'azurerm'
