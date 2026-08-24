@@ -9,10 +9,10 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  strg-rg: rg-terraform-demo
-  stgacct: stgmdemo1064155300
-  stg-cont: tfstate
-  stg-key: simple_vm_key.tfstate
+  strgrg: 'rg-terraform-demo'
+  stgacct: 'stgmdemo1064155300'
+  stgcont: 'tfstate'
+  stgkey: 'simple_vm_key.tfstate'
 
   
 
@@ -40,10 +40,10 @@ stages:
         provider: 'azurerm'
         command: 'init'
         backendServiceArm: 'miyoming_vm'
-        backendAzureRmResourceGroupName: '$(strg-rg)'
+        backendAzureRmResourceGroupName: '$(strgrg)'
         backendAzureRmStorageAccountName: '$(stgacct)'
-        backendAzureRmContainerName: '$(stg-cont)'
-        backendAzureRmKey: '$(stg-key)'
+        backendAzureRmContainerName: '$(stgcont)'
+        backendAzureRmKey: '$(stgkey)'
 
     - task: TerraformTask@5
       displayName: Terraform validate
@@ -75,10 +75,10 @@ stages:
           provider: 'azurerm'
           command: 'init'
           backendServiceArm: 'miyoming_vm'
-          backendAzureRmResourceGroupName: '$(strg-rg)'
+          backendAzureRmResourceGroupName: '$(strgrg)'
           backendAzureRmStorageAccountName: '$(stgacct)'
-          backendAzureRmContainerName: '$(stg-cont)'
-          backendAzureRmKey: '$(stg-key)'      
+          backendAzureRmContainerName: '$(stgcont)'
+          backendAzureRmKey: '$(stgkey)'      
 
       - task: TerraformTask@5
         displayName: Terraform apply
