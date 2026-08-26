@@ -45,3 +45,5 @@ stages:
         provider: 'azurerm'
         command: 'destroy'
         environmentServiceNameAzureRM: 'miyoming_vm'
+      env:
+        TF_VAR_admin_password: $(LocalAdmin)
