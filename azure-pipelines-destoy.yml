@@ -22,6 +22,14 @@ stages:
   - job: destroy
     steps:
 
+    - task: AzureKeyVault@2
+      displayName: Fetch keyvault
+      inputs:
+        azureSubscription: 'miyoming_vm'
+        KeyVaultName: 'miyoming-keyvault'
+        SecretsFilter: '*'
+        RunAsPreJob: false  
+
     - task: TerraformInstaller@1
       displayName: Install Terraform
       inputs:
