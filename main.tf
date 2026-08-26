@@ -43,6 +43,15 @@ resource "azurerm_resource_group" "example" {
 
 
 
+resource "azurerm_public_ip" "example" {
+  name                = "samplevm-public-ip"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+  allocation_method   = "Static"
+  sku                 = "Standard"
+
+}
+
 resource "azurerm_network_interface" "main" {
   name                = "${var.prefix}-nic"
   location            = azurerm_resource_group.example.location
@@ -52,8 +61,11 @@ resource "azurerm_network_interface" "main" {
     name                          = "testconfiguration1"
     subnet_id                     = data.azurerm_subnet.existing_subnet.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.example.id
   }
 }
+
+
 
 resource "azurerm_virtual_machine" "main" {
   name                  = "${var.prefix}-vm"
@@ -83,7 +95,7 @@ resource "azurerm_virtual_machine" "main" {
   os_profile {
     computer_name  = "test-miyoming"
     admin_username = "miyoming"
-    admin_password = "P@ssw0rd1dc123"
+    admin_password = var.admin_password
   }
   os_profile_linux_config {
     disable_password_authentication = false
