@@ -11,7 +11,7 @@ backend "azurerm" {
     container_name       = ""
     key                  = ""
 
-}
+#}
 }
 provider "azurerm" {
   features {}
