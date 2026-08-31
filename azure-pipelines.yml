@@ -9,11 +9,11 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-strgrg: 'rg-terraform-demo'
-stgacct: 'stgmdemo1064155300'
-stgcont: 'tfstate'
-stgkey: 'simple_vm_key.tfstate'
-nsg_name: 'simple-vm-nsg'
+  strgrg: 'rg-terraform-demo'
+  stgacct: 'stgmdemo1064155300'
+  stgcont: 'tfstate'
+  stgkey: 'simple_vm_key.tfstate'
+  nsg_name: 'simple-vm-nsg'
   
 
 
