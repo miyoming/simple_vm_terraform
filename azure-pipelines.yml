@@ -8,7 +8,7 @@ trigger: none
 pool:
   vmImage: ubuntu-latest
 
-#variables:
+variables:
   strgrg: 'rg-terraform-demo'
   stgacct: 'stgmdemo1064155300'
   stgcont: 'tfstate'
@@ -59,6 +59,17 @@ stages:
         environmentServiceNameAzureRM: 'miyoming_vm'
       env:
         TF_VAR_admin_password: $(LocalAdmin)
+        TF_VAR_name: $(name)
+        TF_VAR_priority: $(priority)
+        TF_VAR_direction: $(direction)
+        TF_VAR_access: $(access)
+        TF_VAR_protocol: $(protocol)
+        TF_VAR_source_port_range: $(source_port_range)
+        TF_VAR_destination_port_range: $(destination_port_range)
+        TF_VAR_source_address_prefix: $(source_address_prefix)
+        TF_VAR_destination_address_prefix: $(destination_address_prefix)
+
+
 
 - stage: tfapply
   dependsOn: tfvalidate
