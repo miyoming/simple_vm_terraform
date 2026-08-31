@@ -15,6 +15,21 @@ variables:
   stgkey: 'simple_vm_key.tfstate'
   nsg_name: 'simple-vm-nsg'
   
+  TF_VAR_nsg_rules: |
+    [
+      {
+        "name": "allow-incoming-traffic",
+        "priority": 100,
+        "direction": "Inbound",
+        "access": "Allow",
+        "protocol": "Tcp",
+        "source_port_range": "*",
+        "destination_port_range": "*",
+        "source_address_prefix": "*",
+        "destination_address_prefix": "*"
+      },
+
+    ]
 
 stages:
 - stage: tfvalidate
