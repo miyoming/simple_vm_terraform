@@ -66,7 +66,7 @@ resource "azurerm_network_security_group" "example" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "example" {
-  network_interface_id          = azurerm_network_interface.main.id
+  subnet_id                 = data.azurerm_subnet.existing_subnet.id
   network_security_group_id = azurerm_network_security_group.example.id
 }
 
