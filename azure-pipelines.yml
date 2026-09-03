@@ -24,7 +24,7 @@ stages:
         azureSubscription: 'miyoming_vm'
         KeyVaultName: 'miyoming-keyvault'
         SecretsFilter: '*'
-        RunAsPreJob: false
+        RunAsPreJob: true
 
     - task: TerraformInstaller@1
       displayName: Install Terraform
@@ -74,7 +74,7 @@ stages:
           azureSubscription: 'miyoming_vm'
           KeyVaultName: 'miyoming-keyvault'
           SecretsFilter: '*'
-          RunAsPreJob: false
+          RunAsPreJob: true
 
 
       - task: TerraformInstaller@1
