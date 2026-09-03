@@ -27,5 +27,5 @@ variable "nsg_rules" {
 
 
 locals {
-  nsg_rules_local = jsondecode(${nsg_rules_ado})
+  nsg_rules_local = jsondecode(var.nsg_rules_ado)
 }
