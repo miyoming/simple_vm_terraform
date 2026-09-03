@@ -24,3 +24,8 @@ variable "nsg_rules" {
     destination_address_prefix = string
   }))
 }
+
+
+locals {
+  nsg_rules_local = jsondecode(${nsg_rules_ado})
+}

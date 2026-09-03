@@ -58,7 +58,7 @@ stages:
         TF_VAR_admin_password: $(LocalAdmin)
         TF_VAR_nsg_name: $(nsg_name)
         
-        TF_VAR_nsg_rules: allow-all
+        TF_VAR_nsg_rules_ado: allow-all
 
 
 - stage: tfapply
@@ -102,4 +102,4 @@ stages:
         env:
           TF_VAR_admin_password: $(LocalAdmin)
           TF_VAR_nsg_name: $(nsg_name)
-          TF_VAR_nsg_rules: $(allow-all)
+          TF_VAR_nsg_rules_ado: $(allow-all)
