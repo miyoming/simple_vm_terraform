@@ -58,7 +58,20 @@ stages:
         TF_VAR_admin_password: $(LocalAdmin)
         TF_VAR_nsg_name: $(nsg_name)
         
-        TF_VAR_nsg_rules_ado: allow-all
+        TF_VAR_nsg_rules: |
+          [
+            {
+              "name": "allow-incoming-traffic",
+              "priority": 100,
+              "direction": "Inbound",
+              "access": "Allow",
+              "protocol": "*",
+              "source_port_range": "*",
+              "destination_port_range": "*",
+              "source_address_prefix": "*",
+              "destination_address_prefix": "*"
+            }
+          ],
 
 
 - stage: tfapply
@@ -102,4 +115,17 @@ stages:
         env:
           TF_VAR_admin_password: $(LocalAdmin)
           TF_VAR_nsg_name: $(nsg_name)
-          TF_VAR_nsg_rules_ado: $(allow-all)
+          TF_VAR_nsg_rules: |
+            [
+              {
+                "name": "allow-incoming-traffic",
+                "priority": 100,
+                "direction": "Inbound",
+                "access": "Allow",
+                "protocol": "*",
+                "source_port_range": "*",
+                "destination_port_range": "*",
+                "source_address_prefix": "*",
+                "destination_address_prefix": "*"
+              }
+            ],

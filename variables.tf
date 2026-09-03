@@ -26,6 +26,3 @@ variable "nsg_rules" {
 }
 
 
-locals {
-  nsg_rules_local = jsondecode(var.nsg_rules_ado)
-}
