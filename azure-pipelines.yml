@@ -1,7 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 
 trigger: none
 
@@ -27,7 +23,7 @@ stages:
       inputs:
         azureSubscription: 'miyoming_vm'
         KeyVaultName: 'miyoming-keyvault'
-        SecretsFilter: 'LocalAdmin'
+        SecretsFilter: '*'
         RunAsPreJob: false
 
     - task: TerraformInstaller@1
@@ -62,21 +58,7 @@ stages:
         TF_VAR_admin_password: $(LocalAdmin)
         TF_VAR_nsg_name: $(nsg_name)
         
-        TF_VAR_nsg_rules: |
-          [
-            {
-              "name": "allow-incoming-traffic",
-              "priority": 100,
-              "direction": "Inbound",
-              "access": "Allow",
-              "protocol": "Tcp",
-              "source_port_range": "*",
-              "destination_port_range": "*",
-              "source_address_prefix": "*",
-              "destination_address_prefix": "*"
-            },
-
-          ]
+        TF_VAR_nsg_rules: allow-all
 
 
 - stage: tfapply
@@ -85,6 +67,16 @@ stages:
   jobs:
   - job: apply_now
     steps:
+
+      - task: AzureKeyVault@2
+        displayName: Fetch keyvault
+        inputs:
+          azureSubscription: 'miyoming_vm'
+          KeyVaultName: 'miyoming-keyvault'
+          SecretsFilter: '*'
+          RunAsPreJob: false
+
+
       - task: TerraformInstaller@1
         displayName: Terraform init
         inputs:
@@ -110,18 +102,4 @@ stages:
         env:
           TF_VAR_admin_password: $(LocalAdmin)
           TF_VAR_nsg_name: $(nsg_name)
-          TF_VAR_nsg_rules: |
-            [
-              {
-                "name": "allow-incoming-traffic",
-                "priority": 100,
-                "direction": "Inbound",
-                "access": "Allow",
-                "protocol": "Tcp",
-                "source_port_range": "*",
-                "destination_port_range": "*",
-                "source_address_prefix": "*",
-                "destination_address_prefix": "*"
-              },
-
-            ]          
+          TF_VAR_nsg_rules: $(allow-all)
