@@ -70,8 +70,8 @@ stages:
               "destination_port_range": "*",
               "source_address_prefix": "*",
               "destination_address_prefix": "*"
-            }
-          ],
+            },
+          ]
 
 
 - stage: tfapply
@@ -127,5 +127,5 @@ stages:
                 "destination_port_range": "*",
                 "source_address_prefix": "*",
                 "destination_address_prefix": "*"
-              }
-            ],
+              },
+            ]
